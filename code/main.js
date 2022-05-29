@@ -21,6 +21,7 @@ loadSound("Final-win", "sounds/Final-win.wav");
 loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
 loadSound("gameover", "sounds/gameover.wav");
 loadSound("Killing bug", "sounds/Killing bug.mp3");
+loadSound("Background", "sounds/Background.mp3");
 
 // lets define some game variables
 let SPEED = 620
@@ -28,6 +29,8 @@ let BSPEED = 2
 let CSPEED = 2
 let SCORE = 0
 let score;
+let bg=true;
+let bgMusic;
 
 // 
 // Lets define a function to diaplay our score
@@ -66,6 +69,22 @@ onKeyDown("down", () => {
   player.move(0,+SPEED)
 })
 
+
+// to play bg music clik on play
+onClick(()=> {
+  playBg();
+})
+
+// playBg function defination
+const playBg= () => {
+  if(bg)
+  {
+    bgMusic = play("Background")
+    // ek bar play krdiya to music chalte rhega
+    bg= false;
+  }
+}
+
 // Lets add 5 bugs on loop AND A COFEE
 
 setInterval(()=> {
@@ -80,7 +99,7 @@ setInterval(()=> {
      sprite("Bug"),
      pos(x, y),
      area(),
-     scale(0.3), //resizes the sprite
+     scale(0.1), //resizes the sprite
         "Bug",
     ])
     c.onUpdate(() =>{
@@ -106,11 +125,13 @@ setInterval(()=> {
     d.onUpdate(() =>{
       d.moveTo(d.pos.x, d.pos.y - BSPEED)
         })
+  
 },2500)
 
 // when player collide with bug
 player.onCollide("Bug", () => {
   // backgroundMusic.volume(0.2)
+  bgMusic.pause()
   play("Killing bug")
   play("gameover")
   destroy(player)
@@ -125,12 +146,14 @@ player.onCollide("Bug", () => {
 
 // when player collide with coffee 
 player.onCollide("Coffee", (cofee) => {
+  bgMusic.volume(0.7)
    play("Coffee-sipping")
   play("Player-saying-yes")
   destroy(cofee)
   SCORE++;
   SPEED+= 10;
   score.text = "Score:" + SCORE;
+  bgMusic.volume(1);
 })
 
 // display the score

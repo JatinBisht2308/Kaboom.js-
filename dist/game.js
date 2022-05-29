@@ -2929,10 +2929,13 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
   loadSound("gameover", "sounds/gameover.wav");
   loadSound("Killing bug", "sounds/Killing bug.mp3");
+  loadSound("Background", "sounds/Background.mp3");
   var SPEED = 620;
   var BSPEED = 2;
   var SCORE = 0;
   var score;
+  var bg = true;
+  var bgMusic;
   function displayScore() {
     destroy(score);
     score = add([
@@ -2961,6 +2964,15 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   onKeyDown("down", () => {
     player.move(0, +SPEED);
   });
+  onClick(() => {
+    playBg();
+  });
+  var playBg = /* @__PURE__ */ __name(() => {
+    if (bg) {
+      bgMusic = play("Background");
+      bg = false;
+    }
+  }, "playBg");
   setInterval(() => {
     for (let i = 0; i < 4; i++) {
       let x2 = rand(0, width());
@@ -2969,7 +2981,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         sprite("Bug"),
         pos(x2, y2),
         area(),
-        scale(0.3),
+        scale(0.1),
         "Bug"
       ]);
       c.onUpdate(() => {
@@ -2993,18 +3005,21 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     });
   }, 2500);
   player.onCollide("Bug", () => {
+    bgMusic.pause();
     play("Killing bug");
     play("gameover");
     destroy(player);
     addKaboom(player.pos);
   });
   player.onCollide("Coffee", (cofee) => {
+    bgMusic.volume(0.7);
     play("Coffee-sipping");
     play("Player-saying-yes");
     destroy(cofee);
     SCORE++;
     SPEED += 10;
     score.text = "Score:" + SCORE;
+    bgMusic.volume(1);
   });
   displayScore();
 })();
