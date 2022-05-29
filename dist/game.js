@@ -2928,6 +2928,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSound("Final-win", "sounds/Final-win.wav");
   loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
   var SPEED = 620;
+  var BSPEED = 2;
+  var SCORE = 0;
   var player = add([
     sprite("KGF-Programmer"),
     pos(50, 30),
@@ -2945,6 +2947,49 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   });
   onKeyDown("down", () => {
     player.move(0, +SPEED);
+  });
+  setInterval(() => {
+    for (let i = 0; i < 4; i++) {
+      let x2 = rand(0, width());
+      let y2 = height();
+      let c = add([
+        sprite("Bug"),
+        pos(x2, y2),
+        area(),
+        scale(0.5),
+        "Bug"
+      ]);
+      c.onUpdate(() => {
+        c.moveTo(c.pos.x, c.pos.y - BSPEED);
+      });
+      if (BSPEED < 16) {
+        BSPEED = BSPEED + 0.1;
+      }
+    }
+    let x = rand(10, width());
+    let y = height();
+    let d = add([
+      sprite("Coffee"),
+      pos(x, y),
+      area(),
+      scale(1),
+      "Coffee"
+    ]);
+    d.onUpdate(() => {
+      d.moveTo(d.pos.x, d.pos.y - BSPEED);
+    });
+  }, 2500);
+  player.onCollide("Bug", () => {
+    play("Killing bug");
+    destroy(player);
+    addKaboom(player.pos);
+  });
+  player.onCollide("Coffee", (cofee) => {
+    play("Coffee-sipping");
+    play("Player-saying-yes");
+    destroy(cofee);
+    SCORE++;
+    SPEED += 10;
   });
 })();
 //# sourceMappingURL=game.js.map

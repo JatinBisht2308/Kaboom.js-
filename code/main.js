@@ -22,8 +22,10 @@ loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
 
 
 // lets define some game variables
-const SPEED = 620
-
+let SPEED = 620
+let BSPEED = 2
+let CSPEED = 2
+let SCORE = 0
 // add the programmer to the game
 const player = add([
     // List of components, each offers a set of functionalities
@@ -46,4 +48,67 @@ onKeyDown("up", () => {
 })
 onKeyDown("down", () => {
   player.move(0,+SPEED)
+})
+
+// Lets add 5 bugs on loop AND A COFEE
+
+setInterval(()=> {
+  for(let i=0;i<4;i++)
+    {
+      let x = rand(0,width())
+      let y = height()
+
+      let  c = add([
+    // List of components, each offers a set of functionalities
+     sprite("Bug"),
+     pos(x, y),
+     area(),
+     scale(0.5), //resizes the sprite
+        "Bug",
+    ])
+    c.onUpdate(() =>{
+      c.moveTo(c.pos.x, c.pos.y -BSPEED)
+        })
+      if(BSPEED<16)
+      {
+        BSPEED = BSPEED+0.1;
+      }
+    }
+    let x = rand(10,width())
+      let y = height()
+// lets add a cofee
+      let  d = add([
+    // List of components, each offers a set of functionalities
+     sprite("Coffee"),
+     pos(x, y),
+     area(),
+     scale(1), //resizes the sprite
+        "Coffee",
+    ])
+    d.onUpdate(() =>{
+      d.moveTo(d.pos.x, d.pos.y - BSPEED)
+        })
+},2500)
+
+// when player collide with bug
+player.onCollide("Bug", () => {
+  // backgroundMusic.volume(0.2)
+  play("Killing bug")
+  destroy(player)
+  addKaboom(player.pos)
+  // scoreText = add([
+  //     text("Game Over"),
+  //     scale(3),
+  //     pos(10, 21),
+  //     color(10, 10, 255)
+  // ])
+})
+
+// when player collide with coffee 
+player.onCollide("Coffee", (cofee) => {
+   play("Coffee-sipping")
+  play("Player-saying-yes")
+  destroy(cofee)
+  SCORE++;
+  SPEED+= 10;
 })
