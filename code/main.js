@@ -21,3 +21,14 @@ loadSound("Final-win", "sounds/Final-win.wav");
 loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
 
 
+// lets define some game variables
+const SPEED = 620
+
+// add the programmer to the game
+const player = add([
+    // List of components, each offers a set of functionalities
+     sprite("KGF-Programmer"),
+     pos(50, 30),
+     area(),
+     scale(1) //resizes the sprite
+])

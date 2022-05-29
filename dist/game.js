@@ -2927,5 +2927,11 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSound("Intro background", "sounds/Intro background.mp3");
   loadSound("Final-win", "sounds/Final-win.wav");
   loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
+  var player = add([
+    sprite("KGF-Programmer"),
+    pos(50, 30),
+    area(),
+    scale(1)
+  ]);
 })();
 //# sourceMappingURL=game.js.map
