@@ -19,20 +19,35 @@ loadSound("Player-saying-yes", "sounds/Player-saying-yes.wav");
 loadSound("Intro background", "sounds/Intro background.mp3");
 loadSound("Final-win", "sounds/Final-win.wav");
 loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
-
+loadSound("gameover", "sounds/gameover.wav");
+loadSound("Killing bug", "sounds/Killing bug.mp3");
 
 // lets define some game variables
 let SPEED = 620
 let BSPEED = 2
 let CSPEED = 2
 let SCORE = 0
+let score;
+
+// 
+// Lets define a function to diaplay our score
+function displayScore()
+  {
+    score = add([
+    text("Score: 0"),
+    pos(24, 24),
+      scale(3),
+    { value: 0},
+    ])
+  }
+
 // add the programmer to the game
 const player = add([
     // List of components, each offers a set of functionalities
      sprite("KGF-Programmer"),
      pos(50, 30),
      area(),
-     scale(1) //resizes the sprite
+     scale(0.7) //resizes the sprite
 ])
 
 // moving the programmer
@@ -55,6 +70,7 @@ onKeyDown("down", () => {
 setInterval(()=> {
   for(let i=0;i<4;i++)
     {
+      // displayScore();
       let x = rand(0,width())
       let y = height()
 
@@ -62,8 +78,8 @@ setInterval(()=> {
     // List of components, each offers a set of functionalities
      sprite("Bug"),
      pos(x, y),
-     area(),
-     scale(0.5), //resizes the sprite
+     area({ width: 0.1, height: 0.1}),
+     scale(0.3), //resizes the sprite
         "Bug",
     ])
     c.onUpdate(() =>{
@@ -75,14 +91,15 @@ setInterval(()=> {
       }
     }
     let x = rand(10,width())
+
       let y = height()
 // lets add a cofee
       let  d = add([
     // List of components, each offers a set of functionalities
      sprite("Coffee"),
      pos(x, y),
-     area(),
-     scale(1), //resizes the sprite
+     area({ width: 15, height: 15 }),
+     scale(0.8), //resizes the sprite
         "Coffee",
     ])
     d.onUpdate(() =>{
@@ -94,6 +111,7 @@ setInterval(()=> {
 player.onCollide("Bug", () => {
   // backgroundMusic.volume(0.2)
   play("Killing bug")
+  play("gameover")
   destroy(player)
   addKaboom(player.pos)
   // scoreText = add([
@@ -111,4 +129,8 @@ player.onCollide("Coffee", (cofee) => {
   destroy(cofee)
   SCORE++;
   SPEED+= 10;
+  score.text = "Score:" + SCORE;
 })
+
+// display the score
+displayScore();

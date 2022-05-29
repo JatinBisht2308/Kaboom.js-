@@ -2927,14 +2927,26 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSound("Intro background", "sounds/Intro background.mp3");
   loadSound("Final-win", "sounds/Final-win.wav");
   loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
+  loadSound("gameover", "sounds/gameover.wav");
+  loadSound("Killing bug", "sounds/Killing bug.mp3");
   var SPEED = 620;
   var BSPEED = 2;
   var SCORE = 0;
+  var score;
+  function displayScore() {
+    score = add([
+      text("Score: 0"),
+      pos(24, 24),
+      scale(3),
+      { value: 0 }
+    ]);
+  }
+  __name(displayScore, "displayScore");
   var player = add([
     sprite("KGF-Programmer"),
     pos(50, 30),
     area(),
-    scale(1)
+    scale(0.7)
   ]);
   onKeyDown("left", () => {
     player.move(-SPEED, 0);
@@ -2955,8 +2967,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       let c = add([
         sprite("Bug"),
         pos(x2, y2),
-        area(),
-        scale(0.5),
+        area({ width: 0.1, height: 0.1 }),
+        scale(0.3),
         "Bug"
       ]);
       c.onUpdate(() => {
@@ -2971,8 +2983,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     let d = add([
       sprite("Coffee"),
       pos(x, y),
-      area(),
-      scale(1),
+      area({ width: 15, height: 15 }),
+      scale(0.8),
       "Coffee"
     ]);
     d.onUpdate(() => {
@@ -2981,6 +2993,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   }, 2500);
   player.onCollide("Bug", () => {
     play("Killing bug");
+    play("gameover");
     destroy(player);
     addKaboom(player.pos);
   });
@@ -2990,6 +3003,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     destroy(cofee);
     SCORE++;
     SPEED += 10;
+    score.text = "Score:" + SCORE;
   });
+  displayScore();
 })();
 //# sourceMappingURL=game.js.map
