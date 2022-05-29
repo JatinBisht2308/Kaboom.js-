@@ -2927,11 +2927,24 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSound("Intro background", "sounds/Intro background.mp3");
   loadSound("Final-win", "sounds/Final-win.wav");
   loadSound("Drinking coffee", "sounds/Drinking coffee.wav");
+  var SPEED = 620;
   var player = add([
     sprite("KGF-Programmer"),
     pos(50, 30),
     area(),
     scale(1)
   ]);
+  onKeyDown("left", () => {
+    player.move(-SPEED, 0);
+  });
+  onKeyDown("right", () => {
+    player.move(+SPEED, 0);
+  });
+  onKeyDown("up", () => {
+    player.move(0, -SPEED);
+  });
+  onKeyDown("down", () => {
+    player.move(0, +SPEED);
+  });
 })();
 //# sourceMappingURL=game.js.map

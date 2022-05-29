@@ -32,3 +32,18 @@ const player = add([
      area(),
      scale(1) //resizes the sprite
 ])
+
+// moving the programmer
+onKeyDown("left", () => {
+  // move(x-axis,y-axis)
+  player.move(-SPEED,0)
+})
+onKeyDown("right", () => {
+  player.move(+SPEED,0)
+})
+onKeyDown("up", () => {
+  player.move(0,-SPEED)
+})
+onKeyDown("down", () => {
+  player.move(0,+SPEED)
+})
