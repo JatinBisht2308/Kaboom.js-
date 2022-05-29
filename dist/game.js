@@ -2934,9 +2934,10 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var SCORE = 0;
   var score;
   function displayScore() {
+    destroy(score);
     score = add([
       text("Score: 0"),
-      pos(24, 24),
+      pos(width() - 200, 24),
       scale(3),
       { value: 0 }
     ]);
@@ -2967,7 +2968,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       let c = add([
         sprite("Bug"),
         pos(x2, y2),
-        area({ width: 0.1, height: 0.1 }),
+        area(),
         scale(0.3),
         "Bug"
       ]);
@@ -2983,7 +2984,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     let d = add([
       sprite("Coffee"),
       pos(x, y),
-      area({ width: 15, height: 15 }),
+      area(),
       scale(0.8),
       "Coffee"
     ]);

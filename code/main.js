@@ -33,10 +33,11 @@ let score;
 // Lets define a function to diaplay our score
 function displayScore()
   {
+    destroy(score)
     score = add([
     text("Score: 0"),
-    pos(24, 24),
-      scale(3),
+    pos(width()-200, 24),
+    scale(3),
     { value: 0},
     ])
   }
@@ -78,7 +79,7 @@ setInterval(()=> {
     // List of components, each offers a set of functionalities
      sprite("Bug"),
      pos(x, y),
-     area({ width: 0.1, height: 0.1}),
+     area(),
      scale(0.3), //resizes the sprite
         "Bug",
     ])
@@ -98,7 +99,7 @@ setInterval(()=> {
     // List of components, each offers a set of functionalities
      sprite("Coffee"),
      pos(x, y),
-     area({ width: 15, height: 15 }),
+     area(),
      scale(0.8), //resizes the sprite
         "Coffee",
     ])
